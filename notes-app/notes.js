@@ -1,10 +1,6 @@
 const fs = require("fs");
 const chalk = require("chalk");
 
-const getNotes = () => {
-  return "your notes is...";
-};
-
 const success = chalk.bgGreen;
 const error = chalk.bgRed;
 
@@ -13,9 +9,15 @@ const addNote = (title, body) => {
   //   if notes array have same title with the added notes title
   // then there will be a duplicate
   // if there is a duplicate, then we wont be able to add
-  const duplicateNotes = notes.filter((note) => note.title === title);
+  // const duplicateNotes = notes.filter((note) => note.title === title);
+  const duplicateNote = notes.find((note) => note.title === title);
 
-  if (duplicateNotes.length === 0) {
+  debugger
+
+  // find method will find a duplicate
+  // if there is no duplicate, we add new note
+  // if there is, we dont add
+  if (!duplicateNote) {
     notes.push({
       title,
       body,
@@ -42,13 +44,13 @@ const removeNote = (title) => {
 };
 
 const listNotes = (title) => {
-    const notes = loadNotes();
-    console.log(success(`Your notes are:`))
+  const notes = loadNotes();
+  console.log(success(`Your notes are:`));
 
-    notes.forEach(note => {
-        console.log(note.title)
-    })
-}
+  notes.forEach((note) => {
+    console.log(note.title);
+  });
+};
 
 const saveNotes = (notes) => {
   const dataJSON = JSON.stringify(notes);
@@ -70,9 +72,21 @@ const loadNotes = () => {
   }
 };
 
+const readNotes = (title) => {
+  const notes = loadNotes();
+  const note = notes.find((note) => note.title === title);
+
+  if (note) {
+    console.log(success(note.title));
+    console.log(note.body);
+  } else {
+    console.log(error("Note not found"));
+  }
+};
+
 module.exports = {
-  getNotes: getNotes,
   addNote: addNote,
   removeNote: removeNote,
-  listNotes: listNotes
+  listNotes: listNotes,
+  readNotes: readNotes,
 };
