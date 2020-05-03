@@ -70,7 +70,7 @@ router.patch('/users/me', auth, async (req, res) => {
   );
 
   if (!isValidOperation) {
-    return res.status(404).send('error: Invalid operation');
+    return res.status(400).send('error: Invalid operation');
   }
 
   try {
